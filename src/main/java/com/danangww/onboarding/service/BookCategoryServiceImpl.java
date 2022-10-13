@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import com.danangww.onboarding.model.BookCategoryModel;
@@ -35,13 +34,13 @@ public class BookCategoryServiceImpl implements BookCategoryService {
 	public BookCategoryModel update(long id, BookCategoryModel bookCategoryModel) {
 		Optional<BookCategoryModel> check = findById(id);
 		BookCategoryModel resultBookCategoryModel = null;
-		
+
 		if (check.isPresent()) {
 			BookCategoryModel tempBookCategoryModel = check.get();
 			tempBookCategoryModel.setName(bookCategoryModel.getName());
 			resultBookCategoryModel = bookCategoryRepository.save(tempBookCategoryModel);
 		}
-		
+
 		return resultBookCategoryModel;
 	}
 

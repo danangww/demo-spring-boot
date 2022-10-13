@@ -1,21 +1,24 @@
 package com.danangww.onboarding.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "book_categories")
@@ -36,9 +39,9 @@ public class BookCategoryModel {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "book_category_id", referencedColumnName = "id")
-	private List<BookModel> books;
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "bookCategoryModel")
+	@JsonIgnoreProperties("bookCategoryModel")
+	private List<BookModel> books = new ArrayList<>();
 
 	public BookCategoryModel() {
 	}

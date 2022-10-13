@@ -2,6 +2,7 @@ package com.danangww.onboarding.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,8 +15,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "books")
@@ -24,15 +26,15 @@ public class BookModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "title")
+	@Column(name = "title", unique = true, nullable = false)
 	@NotEmpty(message = "title is required")
 	private String title;
 
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "author")
-	@NotEmpty(message = "title is required")
+	@Column(name = "author", nullable = false)
+	@NotEmpty(message = "author is required")
 	private String author;
 
 	@CreationTimestamp
@@ -43,8 +45,9 @@ public class BookModel {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_category_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "book_category_id", referencedColumnName = "id", nullable = false)
+	@JsonIgnoreProperties("books")
 	private BookCategoryModel bookCategoryModel;
 
 	public BookModel() {
